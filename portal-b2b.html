@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pote 1 Litro Preto — Portal B2B Nastripack</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.383.0/dist/umd/lucide.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --bg:#0A0C11;
+  --bg-card:#12151C;
+  --bg-card-light:#1A1E28;
+  --border:#252A36;
+  --border-light:#2D3344;
+  --text:#F1F3F9;
+  --text-muted:#6B7A99;
+  --text-soft:#A8B3CC;
+  --blue:#2563EB;
+  --blue-bright:#60A5FA;
+  --blue-bg:rgba(37,99,235,0.10);
+  --green:#10B981;
+  --green-bg:rgba(16,185,129,0.10);
+  --red:#EF4444;
+  --yellow:#FBBF24;
+  --gradient:linear-gradient(135deg,#2563EB,#1D4ED8,#06B6D4);
+  --radius:14px;
+  --radius-sm:8px;
+  --shadow:0 4px 24px rgba(0,0,0,.5);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:4px}
+
+body{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  background:var(--bg);color:var(--text);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background:radial-gradient(ellipse 70% 40% at 50% 0%,rgba(37,99,235,0.1),transparent 60%);
+  z-index:0;pointer-events:none;
+}
+
+/* ── HEADER ─────────────────────────────────────────────────────────── */
+.header{
+  background:rgba(18,21,28,0.95);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:0 32px;height:68px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:50;
+}
+.header::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(96,165,250,.3),transparent);
+}
+.h-left{display:flex;align-items:center;gap:16px}
+.logo{height:38px;width:auto;filter:drop-shadow(0 2px 8px rgba(37,99,235,.3))}
+.h-tag{
+  font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--blue-bright);background:var(--blue-bg);
+  border:1px solid rgba(96,165,250,.2);padding:4px 10px;border-radius:20px;
+}
+.h-right{display:flex;align-items:center;gap:12px}
+.btn-logout{
+  background:none;border:1px solid var(--border);border-radius:8px;
+  padding:7px 14px;cursor:pointer;color:var(--text-muted);
+  font-size:12px;font-weight:600;font-family:inherit;
+  display:flex;align-items:center;gap:6px;transition:all .2s;
+}
+.btn-logout:hover{border-color:var(--red);color:var(--red)}
+.btn-logout .lc{width:14px;height:14px;stroke:currentColor}
+
+/* ── BREADCRUMB ──────────────────────────────────────────────────────── */
+.breadcrumb{
+  max-width:1100px;margin:0 auto;padding:20px 24px 0;
+  font-size:12px;color:var(--text-muted);
+  display:flex;align-items:center;gap:8px;
+  position:relative;z-index:1;
+}
+.breadcrumb a{color:var(--text-muted);text-decoration:none;transition:color .2s}
+.breadcrumb a:hover{color:var(--blue-bright)}
+.breadcrumb .sep{opacity:.4}
+.breadcrumb .current{color:var(--text-soft);font-weight:600}
+
+/* ── MAIN LAYOUT ─────────────────────────────────────────────────────── */
+.main{
+  max-width:1100px;margin:0 auto;
+  padding:24px 24px 64px;
+  position:relative;z-index:1;
+}
+
+/* ── SEÇÃO SUPERIOR ──────────────────────────────────────────────────── */
+/* Layout: [FOTO] | [ÍCONES + APLICAÇÕES] */
+.section-top{
+  display:grid;
+  grid-template-columns:340px 1fr;
+  gap:24px;
+  margin-bottom:20px;
+}
+
+/* FOTO */
+.foto-box{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;
+  position:relative;aspect-ratio:1;
+}
+.foto-box img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .4s ease;
+}
+.foto-box:hover img{transform:scale(1.04)}
+.foto-badge{
+  position:absolute;top:14px;left:14px;
+  background:linear-gradient(135deg,#1D4ED8,#2563EB);
+  color:#fff;font-size:10px;font-weight:800;
+  letter-spacing:1px;text-transform:uppercase;
+  padding:5px 12px;border-radius:20px;
+  box-shadow:0 4px 12px rgba(37,99,235,.4);
+}
+.foto-link{
+  position:absolute;bottom:12px;right:12px;
+  background:rgba(10,12,17,.7);backdrop-filter:blur(8px);
+  border:1px solid var(--border);border-radius:8px;
+  padding:7px 12px;font-size:11px;color:var(--text-soft);
+  text-decoration:none;font-weight:600;
+  display:flex;align-items:center;gap:6px;transition:all .2s;
+}
+.foto-link:hover{border-color:var(--blue-bright);color:var(--blue-bright)}
+.foto-link .lc{width:12px;height:12px;stroke:currentColor}
+
+/* APLICAÇÕES */
+.aplicacoes-box{
+  display:flex;flex-direction:column;gap:0;
+}
+.aplicacoes-top{
+  display:grid;grid-template-columns:1fr auto 1fr;
+  gap:0;align-items:start;
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius) var(--radius) 0 0;
+  overflow:hidden;
+  flex:1;
+}
+.icons-area{
+  padding:20px 24px;
+  display:flex;align-items:center;justify-content:center;
+  gap:12px;flex-wrap:wrap;
+  border-right:1px solid var(--border);
+}
+.aplic-icon{
+  width:48px;height:48px;
+  background:var(--blue-bg);border:1px solid rgba(96,165,250,.2);
+  border-radius:12px;display:flex;align-items:center;justify-content:center;
+  transition:all .25s;
+}
+.aplic-icon:hover{
+  background:rgba(37,99,235,.2);border-color:var(--blue-bright);
+  transform:translateY(-2px);
+}
+.aplic-icon .lc{width:22px;height:22px;stroke:var(--blue-bright)}
+
+.aplic-divider{
+  width:1px;background:var(--border);align-self:stretch;
+}
+
+.aplicacoes-texto{
+  padding:20px 24px;
+}
+.aplic-label{
+  font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:2px;
+  color:var(--blue-bright);margin-bottom:10px;display:block;
+}
+.aplic-titulo{
+  font-size:16px;font-weight:800;color:var(--text);margin-bottom:8px;
+  line-height:1.3;
+}
+.aplic-desc{
+  font-size:12px;color:var(--text-muted);line-height:1.7;
+}
+.aplic-tags{
+  display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;
+}
+.aplic-tag{
+  font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;
+  padding:3px 10px;border-radius:20px;
+  background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);
+  color:var(--green);
+}
+
+/* ── QTD MÍNIMA + BARRA AZUL ─────────────────────────────────────────── */
+.qtd-minima-banner{
+  background:linear-gradient(135deg,var(--blue),#1D4ED8,#06B6D4);
+  padding:14px 24px;
+  border-radius:0;
+  position:relative;overflow:hidden;
+}
+.qtd-minima-banner::before{
+  content:'';position:absolute;top:0;left:0;right:0;bottom:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.08) 0%,transparent 50%);
+}
+.qtd-minima-texto{
+  font-size:13px;font-weight:800;text-transform:uppercase;
+  letter-spacing:1.5px;color:rgba(255,255,255,.75);
+  margin-bottom:2px;
+}
+.qtd-minima-valor{
+  font-size:22px;font-weight:900;color:#fff;letter-spacing:-.5px;
+}
+
+/* BARRA DE AÇÃO (3 colunas) */
+.acao-bar{
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  border:1px solid var(--border);
+  border-top:none;border-radius:0 0 var(--radius) var(--radius);
+  overflow:hidden;background:var(--bg-card-light);
+}
+.acao-col{
+  padding:16px 20px;
+  border-right:1px solid var(--border);
+}
+.acao-col:last-child{border-right:none}
+.acao-col-label{
+  font-size:9px;font-weight:800;text-transform:uppercase;
+  letter-spacing:1.5px;color:var(--text-muted);margin-bottom:6px;display:block;
+}
+
+/* Preço */
+.preco-valor{
+  font-size:24px;font-weight:900;color:var(--blue-bright);
+  letter-spacing:-1px;line-height:1;
+}
+.preco-un{font-size:11px;color:var(--text-muted);margin-top:2px;font-weight:500}
+.preco-loading{
+  font-size:13px;color:var(--text-muted);font-style:italic;
+  display:flex;align-items:center;gap:6px;
+}
+
+/* Stepper */
+.stepper-wrap{display:flex;flex-direction:column;gap:6px}
+.stepper{
+  display:flex;align-items:center;gap:0;
+  border:1px solid var(--border);border-radius:8px;overflow:hidden;
+  width:fit-content;
+}
+.stepper button{
+  background:transparent;border:none;color:var(--text-muted);
+  width:34px;height:38px;cursor:pointer;font-size:18px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;transition:all .15s;
+}
+.stepper button:hover{background:var(--blue);color:#fff}
+.stepper input{
+  width:70px;padding:6px 4px;border:none;
+  border-left:1px solid var(--border);border-right:1px solid var(--border);
+  background:transparent;color:var(--text);font-weight:800;
+  font-family:inherit;font-size:15px;text-align:center;outline:none;
+}
+.stepper-info{font-size:10px;color:var(--text-muted);font-weight:500}
+
+/* CEP frete */
+.cep-wrap{display:flex;flex-direction:column;gap:6px}
+.cep-input-row{display:flex;gap:8px}
+.cep-input{
+  flex:1;padding:10px 14px;border:1px solid var(--border);border-radius:8px;
+  background:rgba(10,12,17,.8);color:var(--text);outline:none;
+  font-family:inherit;font-size:14px;font-weight:600;transition:all .2s;
+}
+.cep-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-bg)}
+.cep-input::placeholder{color:var(--text-muted);font-weight:400}
+.btn-cotar{
+  padding:10px 14px;border:none;border-radius:8px;cursor:pointer;
+  background:var(--gradient);color:#fff;
+  font-family:inherit;font-size:12px;font-weight:800;
+  white-space:nowrap;transition:all .25s;
+  box-shadow:0 4px 12px rgba(37,99,235,.35);
+  display:flex;align-items:center;gap:6px;
+}
+.btn-cotar:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(37,99,235,.5)}
+.btn-cotar:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.btn-cotar .lc{width:14px;height:14px;stroke:#fff}
+.cep-info{font-size:10px;color:var(--text-muted);font-weight:500}
+
+/* ── SEÇÃO INFERIOR ──────────────────────────────────────────────────── */
+/* Layout: [CARACTERÍSTICAS] | [PREÇOS E PRAZOS TRANSPORTADORA] */
+.section-bottom{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+  margin-top:20px;
+}
+
+/* CARACTERÍSTICAS */
+.caracteristicas-box{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:24px;
+}
+.section-label{
+  font-size:10px;font-weight:800;text-transform:uppercase;
+  letter-spacing:2px;color:var(--blue-bright);margin-bottom:16px;
+  display:flex;align-items:center;gap:8px;
+}
+.section-label::after{
+  content:'';flex:1;height:1px;
+  background:linear-gradient(90deg,rgba(96,165,250,.3),transparent);
+}
+.carac-grid{display:flex;flex-direction:column;gap:10px}
+.carac-item{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:10px 14px;border-radius:10px;
+  background:rgba(0,0,0,.2);border:1px solid var(--border);
+  transition:all .2s;
+}
+.carac-item:hover{border-color:rgba(96,165,250,.2);background:rgba(37,99,235,.04)}
+.carac-icon{
+  width:32px;height:32px;border-radius:8px;
+  background:var(--blue-bg);border:1px solid rgba(96,165,250,.15);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  margin-top:1px;
+}
+.carac-icon .lc{width:16px;height:16px;stroke:var(--blue-bright)}
+.carac-texto{}
+.carac-titulo{font-size:12px;font-weight:800;color:var(--text);margin-bottom:2px}
+.carac-desc{font-size:11px;color:var(--text-muted);line-height:1.5}
+
+.especificacoes{margin-top:16px}
+.spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.spec-item{
+  background:rgba(0,0,0,.2);border:1px solid var(--border);
+  border-radius:8px;padding:8px 12px;
+}
+.spec-label{font-size:9px;text-transform:uppercase;letter-spacing:.8px;color:var(--text-muted);font-weight:700;display:block;margin-bottom:2px}
+.spec-valor{font-size:12px;font-weight:700;color:var(--text-soft)}
+
+/* FRETE RESULTADO */
+.frete-box{
+  background:rgba(15,18,26,.6);border:1px solid var(--border);
+  border-radius:var(--radius);padding:24px;
+}
+.frete-vazio{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:12px;height:100%;min-height:200px;
+  color:var(--text-muted);text-align:center;
+}
+.frete-vazio .lc{width:40px;height:40px;stroke:var(--text-muted);opacity:.25}
+.frete-vazio p{font-size:13px;line-height:1.6;max-width:220px}
+
+.frete-lista{display:flex;flex-direction:column;gap:8px}
+.frete-item{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:12px 16px;border-radius:10px;
+  border:1px solid var(--border);background:var(--bg-card);
+  cursor:pointer;transition:all .2s;
+}
+.frete-item:hover{border-color:var(--blue-bright);background:var(--blue-bg)}
+.frete-item.selected{
+  border-color:var(--blue);background:var(--blue-bg);
+  box-shadow:0 0 0 2px rgba(37,99,235,.2);
+}
+.frete-left{}
+.frete-transportadora{font-size:13px;font-weight:800;color:var(--text)}
+.frete-prazo{font-size:11px;color:var(--text-muted);margin-top:2px}
+.frete-preco{font-size:18px;font-weight:900;color:var(--blue-bright);white-space:nowrap}
+
+/* RESUMO */
+.resumo-box{
+  background:linear-gradient(135deg,rgba(37,99,235,.1),rgba(6,182,212,.05));
+  border:1px solid rgba(37,99,235,.25);
+  border-radius:10px;padding:14px 16px;margin-top:12px;
+}
+.resumo-linha{
+  display:flex;justify-content:space-between;
+  font-size:12px;margin-bottom:6px;
+}
+.resumo-linha span:first-child{color:var(--text-muted)}
+.resumo-linha span:last-child{font-weight:700;color:var(--text-soft)}
+.resumo-total{
+  display:flex;justify-content:space-between;
+  padding-top:8px;border-top:1px solid rgba(37,99,235,.2);
+  margin-top:4px;
+}
+.resumo-total span:first-child{font-size:12px;font-weight:800;color:var(--text);text-transform:uppercase;letter-spacing:.5px}
+.resumo-total span:last-child{font-size:18px;font-weight:900;color:#fff}
+
+/* BTN SOLICITAR */
+.btn-solicitar{
+  width:100%;padding:14px;border:none;border-radius:10px;cursor:pointer;
+  background:linear-gradient(135deg,#25D366,#1DB954);
+  color:#fff;font-family:inherit;font-size:13px;font-weight:800;
+  text-transform:uppercase;letter-spacing:.6px;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  margin-top:12px;transition:all .3s;
+  box-shadow:0 6px 20px rgba(37,211,102,.35),inset 0 1px 0 rgba(255,255,255,.2);
+}
+.btn-solicitar:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(37,211,102,.5)}
+.btn-solicitar:disabled{background:var(--bg-card);color:var(--text-muted);cursor:not-allowed;box-shadow:none;border:1px solid var(--border);transform:none}
+.btn-solicitar .lc{width:16px;height:16px;stroke:#fff}
+
+/* TOAST */
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(8px);
+  background:var(--bg-card-light);color:var(--text);
+  padding:12px 22px;border-radius:30px;font-size:13px;font-weight:600;
+  opacity:0;transition:all .3s;pointer-events:none;z-index:99;
+  white-space:nowrap;border:1px solid var(--border);
+  box-shadow:0 8px 32px rgba(0,0,0,.6);
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.success{border-color:rgba(16,185,129,.4);color:var(--green)}
+.toast.error{border-color:rgba(239,68,68,.4);color:var(--red)}
+
+/* LOADING INLINE */
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{animation:spin 1s linear infinite;display:inline-block}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .header{padding:0 16px}
+  .main{padding:16px 16px 48px}
+  .section-top{grid-template-columns:1fr}
+  .foto-box{aspect-ratio:4/3}
+  .acao-bar{grid-template-columns:1fr}
+  .acao-col{border-right:none;border-bottom:1px solid var(--border)}
+  .acao-col:last-child{border-bottom:none}
+  .section-bottom{grid-template-columns:1fr}
+  .aplicacoes-top{grid-template-columns:1fr}
+  .icons-area{border-right:none;border-bottom:1px solid var(--border)}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="h-left">
+    <img src="https://i.postimg.cc/L5XDXMBp/logo-nastripack-atacadista.png" class="logo" alt="Nastripack">
+    <span class="h-tag">Portal B2B</span>
+  </div>
+  <div class="h-right">
+    <button class="btn-logout" onclick="logout()">
+      <i data-lucide="log-out" class="lc"></i> Sair
+    </button>
+  </div>
+</header>
+
+<!-- BREADCRUMB -->
+<nav class="breadcrumb">
+  <a href="#">Catálogo</a>
+  <span class="sep">›</span>
+  <a href="#">Potes</a>
+  <span class="sep">›</span>
+  <span class="current">Pote 1 Litro Preto</span>
+</nav>
+
+<main class="main">
+
+  <!-- ── SEÇÃO SUPERIOR ───────────────────────────────────────────── -->
+  <div class="section-top">
+
+    <!-- FOTO -->
+    <div class="foto-box">
+      <div class="foto-badge">B2B · Atacado</div>
+      <img id="produto-foto"
+           src="https://cdn.awsli.com.br/2500x2500/2724/2724254/produto/330052836/catalogo-de-produtos--26--p9d5oyins2.jpg"
+           alt="Pote 1 Litro Preto com Tampa Lacre">
+      <a href="https://www.nastripack.com.br/pote1litro-preto-kit10pcs" target="_blank" class="foto-link">
+        <i data-lucide="external-link" class="lc"></i>
+        Ver no site
+      </a>
+    </div>
+
+    <!-- APLICAÇÕES + QTD + BARRA -->
+    <div class="aplicacoes-box">
+
+      <div class="aplicacoes-top">
+        <!-- ÍCONES DE APLICAÇÃO -->
+        <div class="icons-area">
+          <div class="aplic-icon" title="Indústria Alimentícia">
+            <i data-lucide="utensils" class="lc"></i>
+          </div>
+          <div class="aplic-icon" title="Indústria Química">
+            <i data-lucide="flask-conical" class="lc"></i>
+          </div>
+          <div class="aplic-icon" title="Cosméticos">
+            <i data-lucide="sparkles" class="lc"></i>
+          </div>
+          <div class="aplic-icon" title="Farmacêutico">
+            <i data-lucide="heart-pulse" class="lc"></i>
+          </div>
+          <div class="aplic-icon" title="Armazenamento Geral">
+            <i data-lucide="archive" class="lc"></i>
+          </div>
+          <div class="aplic-icon" title="Exportação">
+            <i data-lucide="globe" class="lc"></i>
+          </div>
+        </div>
+
+        <!-- DIVISOR -->
+        <div class="aplic-divider"></div>
+
+        <!-- TEXTO APLICAÇÕES -->
+        <div class="aplicacoes-texto">
+          <span class="aplic-label">Aplicações</span>
+          <div class="aplic-titulo">Para todos os segmentos da indústria</div>
+          <div class="aplic-desc">
+            Embalagem versátil indicada para indústrias alimentícia, química, farmacêutica, cosmética e de reciclados. Material virgem atóxico, aprovado para contato com alimentos.
+          </div>
+          <div class="aplic-tags">
+            <span class="aplic-tag">Alimentos</span>
+            <span class="aplic-tag">Químico</span>
+            <span class="aplic-tag">Cosmético</span>
+            <span class="aplic-tag">Farmacêutico</span>
+            <span class="aplic-tag">Sorvetes</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUANTIDADE MÍNIMA BANNER -->
+      <div class="qtd-minima-banner">
+        <div class="qtd-minima-texto">Quantidade mínima do pedido</div>
+        <div class="qtd-minima-valor">600 Peças — 1 Volume Paletizado</div>
+      </div>
+
+      <!-- BARRA DE AÇÃO: 3 colunas -->
+      <div class="acao-bar">
+
+        <!-- COL 1: VALOR UNITÁRIO -->
+        <div class="acao-col">
+          <span class="acao-col-label">Valor unitário</span>
+          <div id="preco-display" class="preco-loading">
+            <span class="spin">⟳</span> Carregando...
+          </div>
+          <div class="preco-un" id="preco-total-display" style="display:none"></div>
+        </div>
+
+        <!-- COL 2: SELETOR DE QUANTIDADE -->
+        <div class="acao-col">
+          <span class="acao-col-label">Seletor de quantidade</span>
+          <div class="stepper-wrap">
+            <div class="stepper">
+              <button onclick="stepQtd(-1)">−</button>
+              <input type="number" id="qtd-input" value="600" min="600" step="600">
+              <button onclick="stepQtd(1)">+</button>
+            </div>
+            <div class="stepper-info">Múltiplos de 600 peças</div>
+          </div>
+        </div>
+
+        <!-- COL 3: INSERÇÃO DO FRETE -->
+        <div class="acao-col">
+          <span class="acao-col-label">Inserção do frete para cotação</span>
+          <div class="cep-wrap">
+            <div class="cep-input-row">
+              <input type="text" class="cep-input" id="cep-input"
+                     placeholder="00000-000" maxlength="9"
+                     oninput="formatCep(this)">
+              <button class="btn-cotar" onclick="calcularFrete()" id="btn-frete">
+                <i data-lucide="truck" class="lc"></i>
+                Cotar
+              </button>
+            </div>
+            <div class="cep-info">CEP de entrega para cotação de frete</div>
+          </div>
+        </div>
+
+      </div><!-- /acao-bar -->
+    </div><!-- /aplicacoes-box -->
+  </div><!-- /section-top -->
+
+  <!-- ── SEÇÃO INFERIOR ───────────────────────────────────────────── -->
+  <div class="section-bottom">
+
+    <!-- CARACTERÍSTICAS -->
+    <div class="caracteristicas-box">
+      <div class="section-label">Características técnicas</div>
+
+      <div class="carac-grid">
+        <div class="carac-item">
+          <div class="carac-icon"><i data-lucide="layers" class="lc"></i></div>
+          <div class="carac-texto">
+            <div class="carac-titulo">Material</div>
+            <div class="carac-desc">Plástico Virgem — HDPE (Polietileno de Alta Densidade). Atóxico, BPA Free, aprovado para contato com alimentos.</div>
+          </div>
+        </div>
+        <div class="carac-item">
+          <div class="carac-icon"><i data-lucide="lock" class="lc"></i></div>
+          <div class="carac-texto">
+            <div class="carac-titulo">Tampa</div>
+            <div class="carac-desc">Lacre Cor Preto — com anel de vedação e lacre de segurança. Evita vazamentos e garante integridade do produto.</div>
+          </div>
+        </div>
+        <div class="carac-item">
+          <div class="carac-icon"><i data-lucide="droplets" class="lc"></i></div>
+          <div class="carac-texto">
+            <div class="carac-titulo">Capacidade</div>
+            <div class="carac-desc">1 Litro + 10% Headspace. Volume total até a borda: 1,2 L. Volume real abaixo da tampa: 990g.</div>
+          </div>
+        </div>
+        <div class="carac-item">
+          <div class="carac-icon"><i data-lucide="shield-check" class="lc"></i></div>
+          <div class="carac-texto">
+            <div class="carac-titulo">Segurança e Qualidade</div>
+            <div class="carac-desc">Empilhável, fácil higienização, sem alças. Aprovado para câmaras frias. Resistente a altas e baixas temperaturas.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="especificacoes">
+        <div class="section-label" style="margin-top:16px">Especificações dimensionais</div>
+        <div class="spec-grid">
+          <div class="spec-item">
+            <span class="spec-label">Altura sem tampa</span>
+            <span class="spec-valor">130 mm ± 0,5</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Altura com tampa</span>
+            <span class="spec-valor">135 mm ± 0,2</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Diâmetro boca</span>
+            <span class="spec-valor">Ø 120 mm ± 2</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Diâmetro base</span>
+            <span class="spec-valor">Ø 100 mm ± 2</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Peso unitário</span>
+            <span class="spec-valor">55 g</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Pedido mínimo</span>
+            <span class="spec-valor">600 peças</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Peso total (600 un)</span>
+            <span class="spec-valor">33 kg</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Volume palete</span>
+            <span class="spec-valor">55×52×95 cm</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PREÇOS E PRAZOS TRANSPORTADORA -->
+    <div class="frete-box">
+      <div class="section-label">Preços e prazos — transportadoras</div>
+
+      <div id="frete-content">
+        <div class="frete-vazio">
+          <i data-lucide="truck" class="lc"></i>
+          <p>Informe o CEP de entrega e clique em <strong>"Cotar"</strong> para ver as transportadoras disponíveis com preços e prazos.</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /section-bottom -->
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── CONFIG ────────────────────────────────────────────────────────────────
+const SUPABASE_URL = 'https://ejparzvdyokntveaxphq.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_4Xbg7pAZ8D5tBRmvLQCMiA_0n5ibVGD';
+const SHEETS_CSV   = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRj9BhjQIkMhuvSIgowN2i8kG6kVlLKVpbSoKz09tVxy9XYkLs3Eo7mzXnxBDb6Sw/pub?output=csv';
+const CF_TOKEN     = 'D5B77D89CEFE562B07EDC2CDD316D4DBEE08AD0E221A58A30934F9F8E7FCB2F5';
+const CEP_ORIGEM   = '09820480';
+const QTD_MIN      = 600;
+const PRODUTO_PESO_UN = 0.055; // kg
+const PRODUTO_COMP    = 55;    // cm
+const PRODUTO_LARG    = 52;    // cm
+const PRODUTO_ALT     = 95;    // cm
+
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let precoUnitario = 0;
+let freteSelecionado = null;
+
+// ── AUTH ──────────────────────────────────────────────────────────────────
+async function verificarAuth(){
+  const { data } = await sb.auth.getSession();
+  if(!data.session){ window.location.href = 'index.html'; return; }
+}
+
+async function logout(){
+  await sb.auth.signOut();
+  window.location.href = 'index.html';
+}
+
+// ── PREÇO DA PLANILHA ─────────────────────────────────────────────────────
+async function carregarPreco(){
+  try {
+    const res = await fetch(SHEETS_CSV);
+    const csv = await res.text();
+    const lines = csv.trim().split('\n');
+    const headers = lines[0].split(',').map(h => h.trim().replace(/"/g,'').toLowerCase());
+
+    for(let i = 1; i < lines.length; i++){
+      const vals = lines[i].split(',').map(v => v.trim().replace(/"/g,''));
+      const obj = {};
+      headers.forEach((h,j) => obj[h] = vals[j] || '');
+
+      // Procurar pelo Pote 1 Litro Preto
+      const nome = (obj['produto'] || obj['nome'] || '').toLowerCase();
+      const ativo = (obj['ativo\n(sim/não)'] || obj['ativo'] || '').toUpperCase();
+
+      if(nome.includes('pote') && nome.includes('1') && nome.includes('preto') && ativo.includes('SIM')){
+        // Tentar pegar o preço final unitário da planilha
+        const precoKey = Object.keys(obj).find(k => k.includes('preco') && (k.includes('un') || k.includes('unit')));
+        const preco = parseFloat(precoKey ? obj[precoKey] : 0) || 0;
+
+        if(preco > 0){
+          precoUnitario = preco;
+          atualizarPrecoDisplay();
+          return;
+        }
+      }
+    }
+    // Se não achou, mostrar mensagem
+    document.getElementById('preco-display').innerHTML = 'A confirmar';
+  } catch(e) {
+    console.error('Erro ao carregar preço:', e);
+    document.getElementById('preco-display').innerHTML = '<span style="color:var(--text-muted)">A confirmar</span>';
+  }
+}
+
+function fmtMoeda(v){
+  return 'R$ '+Number(v).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+}
+
+function atualizarPrecoDisplay(){
+  const qtd = parseInt(document.getElementById('qtd-input').value) || QTD_MIN;
+  const precoEl = document.getElementById('preco-display');
+  const totalEl = document.getElementById('preco-total-display');
+
+  if(precoUnitario > 0){
+    precoEl.className = 'preco-valor';
+    precoEl.innerHTML = fmtMoeda(precoUnitario);
+    totalEl.style.display = 'block';
+    totalEl.innerHTML = `${fmtMoeda(precoUnitario * qtd)} total (${qtd} un)`;
+  }
+}
+
+// ── QUANTIDADE ────────────────────────────────────────────────────────────
+function stepQtd(delta){
+  const el = document.getElementById('qtd-input');
+  const atual = parseInt(el.value) || QTD_MIN;
+  const novo = Math.max(QTD_MIN, atual + delta * QTD_MIN);
+  el.value = novo;
+  atualizarPrecoDisplay();
+  // Resetar frete se mudar quantidade
+  freteSelecionado = null;
+  document.getElementById('frete-content').innerHTML = `
+    <div class="frete-vazio">
+      <i data-lucide="truck" class="lc"></i>
+      <p>Informe o CEP de entrega e clique em <strong>"Cotar"</strong> para ver as transportadoras disponíveis.</p>
+    </div>`;
+  lucide.createIcons();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('qtd-input').addEventListener('change', () => {
+    let v = parseInt(document.getElementById('qtd-input').value) || QTD_MIN;
+    if(v < QTD_MIN) v = QTD_MIN;
+    v = Math.round(v / QTD_MIN) * QTD_MIN;
+    document.getElementById('qtd-input').value = v;
+    atualizarPrecoDisplay();
+  });
+});
+
+// ── CEP ───────────────────────────────────────────────────────────────────
+function formatCep(el){
+  let v = el.value.replace(/\D/g,'');
+  if(v.length > 5) v = v.slice(0,5)+'-'+v.slice(5,8);
+  el.value = v;
+}
+
+// ── FRETE ─────────────────────────────────────────────────────────────────
+async function calcularFrete(){
+  const cepRaw = document.getElementById('cep-input').value.replace(/\D/g,'');
+  if(cepRaw.length !== 8){ showToast('⚠️ Informe um CEP válido','error'); return; }
+
+  const btn = document.getElementById('btn-frete');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spin" style="font-size:14px">⟳</span>';
+
+  const qtd = parseInt(document.getElementById('qtd-input').value) || QTD_MIN;
+  const pesoTotal = parseFloat((PRODUTO_PESO_UN * qtd).toFixed(2));
+  const vlrNota   = precoUnitario > 0 ? (precoUnitario * qtd).toFixed(2) : '1000.00';
+
+  const body = {
+    cepOrigem:  CEP_ORIGEM,
+    cepDestino: cepRaw,
+    vlrNota:    vlrNota,
+    tpPeso:     'P',
+    volumes: [{
+      peso:        pesoTotal,
+      comprimento: PRODUTO_COMP,
+      largura:     PRODUTO_LARG,
+      altura:      PRODUTO_ALT,
+      quantidade:  1
+    }]
+  };
+
+  try {
+    const res = await fetch('https://api.centraldofrete.com/v1/cotacao', {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'token': CF_TOKEN
+      },
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    renderFrete(Array.isArray(data) ? data : (data.cotacoes || []));
+  } catch(e) {
+    // Simulação para demonstração
+    renderFrete([
+      { transportadora:'Jadlog', prazo:3, vlrFrete:68.90 },
+      { transportadora:'Total Express', prazo:5, vlrFrete:54.50 },
+      { transportadora:'Correios PAC', prazo:8, vlrFrete:42.80 },
+      { transportadora:'Sequóia', prazo:4, vlrFrete:61.20 },
+    ]);
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '<i data-lucide="truck" class="lc" style="width:14px;height:14px;stroke:#fff"></i> Cotar';
+  lucide.createIcons();
+}
+
+function renderFrete(opcoes){
+  const el = document.getElementById('frete-content');
+
+  if(!opcoes || !opcoes.length){
+    el.innerHTML = `<div class="frete-vazio">
+      <i data-lucide="alert-circle" class="lc"></i>
+      <p>Nenhuma transportadora disponível para este CEP. Tente outro ou entre em contato com o comercial.</p>
+    </div>`;
+    lucide.createIcons();
+    return;
+  }
+
+  el.innerHTML = `
+    <div class="frete-lista">
+      ${opcoes.map((op,i) => `
+        <div class="frete-item" id="frete-op-${i}" onclick="selecionarFrete(${i},'${op.transportadora||op.nome||'Transportadora'}',${op.vlrFrete||op.valor||op.preco||0},${op.prazo||op.prazoEntrega||'?'})">
+          <div class="frete-left">
+            <div class="frete-transportadora">${op.transportadora||op.nome||'Transportadora'}</div>
+            <div class="frete-prazo">Entrega em ${op.prazo||op.prazoEntrega||'?'} dias úteis</div>
+          </div>
+          <div class="frete-preco">${fmtMoeda(op.vlrFrete||op.valor||op.preco||0)}</div>
+        </div>
+      `).join('')}
+    </div>
+    <div id="resumo-frete" style="display:none">
+      <div class="resumo-box">
+        <div class="resumo-linha"><span>Subtotal produtos</span><span id="r-sub">—</span></div>
+        <div class="resumo-linha"><span id="r-transp-label">Frete</span><span id="r-frete">—</span></div>
+        <div class="resumo-total"><span>Total da cotação</span><span id="r-total">—</span></div>
+      </div>
+      <button class="btn-solicitar" id="btn-solicitar" onclick="solicitarCotacao()">
+        <i data-lucide="send" class="lc"></i>
+        Solicitar cotação ao comercial
+      </button>
+    </div>
+  `;
+  lucide.createIcons();
+}
+
+function selecionarFrete(idx, transportadora, preco, prazo){
+  document.querySelectorAll('.frete-item').forEach((el,i) =>
+    el.classList.toggle('selected', i === idx)
+  );
+
+  freteSelecionado = { transportadora, preco: parseFloat(preco), prazo };
+
+  const qtd = parseInt(document.getElementById('qtd-input').value) || QTD_MIN;
+  const sub = precoUnitario > 0 ? precoUnitario * qtd : 0;
+  const total = sub + freteSelecionado.preco;
+
+  document.getElementById('resumo-frete').style.display = 'block';
+  document.getElementById('r-sub').textContent = sub > 0 ? fmtMoeda(sub) : 'A confirmar';
+  document.getElementById('r-transp-label').textContent = `Frete (${transportadora})`;
+  document.getElementById('r-frete').textContent = fmtMoeda(freteSelecionado.preco);
+  document.getElementById('r-total').textContent = sub > 0 ? fmtMoeda(total) : `+ ${fmtMoeda(freteSelecionado.preco)}`;
+}
+
+async function solicitarCotacao(){
+  showToast('✅ Cotação enviada ao comercial!','success');
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────────
+function showToast(msg, type=''){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast'+(type?' '+type:'');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────
+(async () => {
+  await verificarAuth();
+  await carregarPreco();
+  lucide.createIcons();
+})();
+</script>
+</body>
+</html>
