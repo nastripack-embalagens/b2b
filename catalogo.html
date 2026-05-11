@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<!-- saved from url=(0048)file:///C:/Users/Andre/Downloads/catalogo_2.html -->
+<html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catálogo B2B — Nastripack</title>
+<link href="./catalogo_files/css2" rel="stylesheet">
+<script src="./catalogo_files/lucide.min.js.baixados"></script>
+<script src="./catalogo_files/supabase-js@2"></script>
+<style>
+:root{
+  --bg:#0A0C11;
+  --bg-card:#12151C;
+  --bg-card-light:#1A1E28;
+  --border:#252A36;
+  --border-light:#2D3344;
+  --text:#F1F3F9;
+  --text-muted:#6B7A99;
+  --text-soft:#A8B3CC;
+  --blue:#2563EB;
+  --blue-bright:#60A5FA;
+  --blue-bg:rgba(37,99,235,0.10);
+  --green:#10B981;
+  --green-bg:rgba(16,185,129,0.10);
+  --yellow:#FBBF24;
+  --gradient:linear-gradient(135deg,#2563EB,#1D4ED8,#06B6D4);
+  --radius:14px;
+  --shadow:0 4px 24px rgba(0,0,0,.5);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border-light);border-radius:4px}
+
+body{
+  font-family:'Plus Jakarta Sans',sans-serif;
+  background:var(--bg);color:var(--text);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background:radial-gradient(ellipse 70% 40% at 50% 0%,rgba(37,99,235,0.1),transparent 60%);
+  z-index:0;pointer-events:none;
+}
+
+/* ── HEADER ── */
+.header{
+  background:rgba(18,21,28,0.95);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:0 32px;height:68px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:50;
+}
+.header::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(96,165,250,.3),transparent);
+}
+.h-left{display:flex;align-items:center;gap:16px}
+.logo{height:38px;width:auto;filter:drop-shadow(0 2px 8px rgba(37,99,235,.3))}
+.h-tag{
+  font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--blue-bright);background:var(--blue-bg);
+  border:1px solid rgba(96,165,250,.2);padding:4px 10px;border-radius:20px;
+}
+.h-right{display:flex;align-items:center;gap:12px}
+.user-email{font-size:12px;color:var(--text-muted);font-weight:500}
+.btn-logout{
+  background:none;border:1px solid var(--border);border-radius:8px;
+  padding:7px 14px;cursor:pointer;color:var(--text-muted);
+  font-size:12px;font-weight:600;font-family:inherit;
+  display:flex;align-items:center;gap:6px;transition:all .2s;
+}
+.btn-logout:hover{border-color:#EF4444;color:#EF4444}
+.btn-logout .lc{width:14px;height:14px;stroke:currentColor}
+
+/* ── MAIN ── */
+.main{
+  max-width:780px;margin:0 auto;
+  padding:32px 24px 64px;
+  position:relative;z-index:1;
+}
+
+/* ── WELCOME ── */
+.welcome{
+  background:linear-gradient(135deg,var(--bg-card),var(--bg-card-light));
+  border:1px solid var(--border);border-radius:var(--radius);
+  padding:20px 24px;margin-bottom:28px;
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+}
+.welcome-text h2{font-size:17px;font-weight:800;color:var(--text);margin-bottom:3px}
+.welcome-text p{font-size:12px;color:var(--text-muted);line-height:1.5}
+.welcome-badge{
+  display:flex;align-items:center;gap:8px;
+  background:var(--green-bg);border:1px solid rgba(16,185,129,.25);
+  color:var(--green);font-size:10px;font-weight:700;
+  padding:6px 14px;border-radius:20px;white-space:nowrap;
+  letter-spacing:.5px;text-transform:uppercase;
+}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--green);
+  box-shadow:0 0 8px var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+
+/* ── SECTION TITLE ── */
+.section-title{
+  font-size:10px;text-transform:uppercase;letter-spacing:2px;
+  color:var(--text-muted);font-weight:700;
+  margin:0 0 16px;padding-bottom:10px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;
+}
+.section-title::before{
+  content:'';width:3px;height:14px;
+  background:var(--gradient);border-radius:3px;
+}
+
+/* ── PRODUTO CARD ── */
+.produto-card{
+  background:linear-gradient(135deg,var(--bg-card),var(--bg-card-light));
+  border:1px solid var(--border);border-radius:var(--radius);
+  margin-bottom:16px;overflow:hidden;
+  transition:all .3s;cursor:pointer;
+  display:flex;
+  position:relative;
+}
+.produto-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(96,165,250,.25),transparent);
+  opacity:0;transition:opacity .3s;
+}
+.produto-card:hover{
+  border-color:rgba(96,165,250,.4);
+  transform:translateY(-2px);
+  box-shadow:0 8px 32px rgba(0,0,0,.5);
+}
+.produto-card:hover::before{opacity:1}
+
+/* FOTO */
+.card-foto{
+  width:160px;flex-shrink:0;
+  overflow:hidden;
+  background:var(--bg);
+  border-right:1px solid var(--border);
+  position:relative;
+}
+.card-foto img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .4s ease;
+}
+.produto-card:hover .card-foto img{transform:scale(1.06)}
+.card-badge{
+  position:absolute;top:10px;left:10px;
+  background:var(--gradient);
+  color:#fff;font-size:9px;font-weight:800;
+  letter-spacing:.8px;text-transform:uppercase;
+  padding:3px 9px;border-radius:20px;
+  box-shadow:0 2px 8px rgba(37,99,235,.4);
+}
+
+/* CONTEÚDO */
+.card-body{
+  flex:1;padding:20px 24px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  gap:12px;
+}
+.card-top{}
+.card-categoria{
+  font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;
+  color:var(--blue-bright);margin-bottom:6px;display:block;
+}
+.card-nome{
+  font-size:16px;font-weight:800;color:var(--text);
+  margin-bottom:8px;line-height:1.3;letter-spacing:-.3px;
+}
+.card-desc{
+  font-size:12px;color:var(--text-muted);line-height:1.6;
+}
+.card-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.card-tag{
+  font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;
+  padding:3px 9px;border-radius:20px;
+  background:var(--blue-bg);border:1px solid rgba(96,165,250,.15);
+  color:var(--blue-bright);
+}
+
+/* FOOTER DO CARD */
+.card-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  padding-top:12px;border-top:1px solid var(--border);
+  gap:12px;
+}
+.card-specs{display:flex;gap:16px}
+.card-spec{text-align:left}
+.card-spec-label{font-size:9px;text-transform:uppercase;letter-spacing:.8px;color:var(--text-muted);font-weight:700;display:block;margin-bottom:2px}
+.card-spec-valor{font-size:12px;font-weight:800;color:var(--text-soft)}
+
+.card-preco-box{text-align:right;flex-shrink:0}
+.card-preco-label{font-size:9px;text-transform:uppercase;letter-spacing:.8px;color:var(--text-muted);font-weight:700;margin-bottom:3px}
+.card-preco{font-size:20px;font-weight:900;color:var(--blue-bright);letter-spacing:-1px;line-height:1}
+.card-preco-un{font-size:10px;color:var(--text-muted);margin-top:2px}
+
+.btn-ver{
+  display:flex;align-items:center;gap:8px;
+  padding:10px 18px;border:none;border-radius:8px;cursor:pointer;
+  background:var(--gradient);color:#fff;
+  font-family:inherit;font-size:12px;font-weight:800;
+  text-transform:uppercase;letter-spacing:.5px;
+  transition:all .25s;flex-shrink:0;
+  box-shadow:0 4px 12px rgba(37,99,235,.35),inset 0 1px 0 rgba(255,255,255,.15);
+}
+.btn-ver:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(37,99,235,.5)}
+.btn-ver .lc{width:14px;height:14px;stroke:#fff}
+
+/* EM BREVE */
+.card-em-breve{
+  position:absolute;inset:0;
+  background:rgba(10,12,17,.75);backdrop-filter:blur(4px);
+  display:flex;align-items:center;justify-content:center;
+  border-radius:var(--radius);
+}
+.em-breve-badge{
+  background:var(--bg-card-light);border:1px solid var(--border);
+  border-radius:20px;padding:8px 18px;
+  font-size:11px;font-weight:700;color:var(--text-muted);
+  display:flex;align-items:center;gap:8px;
+  letter-spacing:.5px;text-transform:uppercase;
+}
+.em-breve-badge .lc{width:14px;height:14px;stroke:var(--text-muted)}
+
+/* LOADING */
+.loading-card{
+  background:var(--bg-card);border:1px solid var(--border);
+  border-radius:var(--radius);padding:24px;margin-bottom:16px;
+  display:flex;gap:16px;animation:shimmer 1.5s infinite;
+}
+@keyframes shimmer{
+  0%,100%{opacity:.5}50%{opacity:1}
+}
+.load-foto{width:160px;height:140px;background:var(--border);border-radius:8px;flex-shrink:0}
+.load-body{flex:1;display:flex;flex-direction:column;gap:10px;justify-content:center}
+.load-line{height:12px;background:var(--border);border-radius:4px}
+.load-line.lg{width:60%}
+.load-line.md{width:40%}
+.load-line.sm{width:25%}
+
+@media(max-width:600px){
+  .header{padding:0 16px}
+  .main{padding:16px 12px 48px}
+  .produto-card{flex-direction:column}
+  .card-foto{width:100%;height:200px;border-right:none;border-bottom:1px solid var(--border)}
+  .card-footer{flex-wrap:wrap}
+  .welcome{flex-direction:column;align-items:flex-start}
+  .user-email{display:none}
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="h-left">
+    <img src="./catalogo_files/logo-nastripack-atacadista.png" class="logo" alt="Nastripack">
+    <span class="h-tag">Portal B2B</span>
+  </div>
+  <div class="h-right">
+    <span class="user-email" id="user-email">andrenastri@gmail.com</span>
+    <button class="btn-logout" onclick="logout()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="log-out" class="lucide lucide-log-out lc"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" x2="9" y1="12" y2="12"></line></svg> Sair
+    </button>
+  </div>
+</header>
+
+<main class="main">
+
+  <div class="welcome">
+    <div class="welcome-text">
+      <h2 id="welcome-nome">Olá, andrenastri! 👋</h2>
+      <p>Consulte preços, quantidades mínimas e cotar frete diretamente pelo portal.</p>
+    </div>
+    <div class="welcome-badge">
+      <span class="dot"></span>
+      Acesso B2B Ativo
+    </div>
+  </div>
+
+  <div class="section-title">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="package" class="lucide lucide-package lc" style="width:13px;height:13px;stroke:var(--blue-bright)"><path d="m7.5 4.27 9 5.15"></path><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg>
+    Catálogo de produtos
+  </div>
+
+  <div id="produtos-lista">
+    <div class="produto-card" onclick="window.location.href=&#39;portal-b2b.html&#39;">
+      <div class="card-foto">
+        <div class="card-badge">Potes</div>
+        <img src="./catalogo_files/catalogo-de-produtos--26--p9d5oyins2.jpg" alt="Pote Plástico 1 Litro Preto" onerror="this.style.display=&#39;none&#39;">
+      </div>
+
+      <div class="card-body">
+        <div class="card-top">
+          <span class="card-categoria">Potes</span>
+          <div class="card-nome">Pote Plástico 1 Litro Preto</div>
+          <div class="card-desc">Embalagem versátil em plástico virgem HDPE, atóxico e BPA Free. Tampa lacre preta com vedação de segurança. Indicado para alimentos, produtos químicos, cosméticos e farmacêuticos.</div>
+          <div class="card-tags">
+            <span class="card-tag">Alimentos</span><span class="card-tag">Químico</span><span class="card-tag">Cosmético</span><span class="card-tag">Farmacêutico</span>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <div class="card-specs">
+            <div class="card-spec">
+              <span class="card-spec-label">Qtd mínima</span>
+              <span class="card-spec-valor">600 un</span>
+            </div>
+            
+            <div class="card-spec">
+              <span class="card-spec-label">Peso volume</span>
+              <span class="card-spec-valor">33 kg</span>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;gap:12px">
+            
+
+            
+            <button class="btn-ver" onclick="event.stopPropagation();window.location.href=&#39;portal-b2b.html&#39;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="arrow-right" class="lucide lucide-arrow-right lc"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+              Ver produto
+            </button>
+          </div>
+        </div>
+      </div>
+
+      
+    </div>
+    <div class="produto-card" onclick="">
+      <div class="card-foto">
+        <div class="card-badge">Potes</div>
+        <div style="width:100%;height:100%;background:var(--bg-card-light);display:flex;align-items:center;justify-content:center">
+               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="package" style="width:48px;height:48px;stroke:var(--border-light)" class="lucide lucide-package"><path d="m7.5 4.27 9 5.15"></path><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg>
+             </div>
+      </div>
+
+      <div class="card-body">
+        <div class="card-top">
+          <span class="card-categoria">Potes</span>
+          <div class="card-nome">Pote Plástico 500ml Preto</div>
+          <div class="card-desc">Em breve disponível no portal.</div>
+          <div class="card-tags">
+            <span class="card-tag">Alimentos</span><span class="card-tag">Químico</span>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <div class="card-specs">
+            <div class="card-spec">
+              <span class="card-spec-label">Qtd mínima</span>
+              <span class="card-spec-valor">600 un</span>
+            </div>
+            
+          </div>
+
+          <div style="display:flex;align-items:center;gap:12px">
+            
+
+            
+          </div>
+        </div>
+      </div>
+
+      
+      <div class="card-em-breve">
+        <div class="em-breve-badge">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="clock" class="lucide lucide-clock lc"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          Em breve
+        </div>
+      </div>
+    </div>
+    <div class="produto-card" onclick="">
+      <div class="card-foto">
+        <div class="card-badge">Baldes</div>
+        <div style="width:100%;height:100%;background:var(--bg-card-light);display:flex;align-items:center;justify-content:center">
+               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="package" style="width:48px;height:48px;stroke:var(--border-light)" class="lucide lucide-package"><path d="m7.5 4.27 9 5.15"></path><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg>
+             </div>
+      </div>
+
+      <div class="card-body">
+        <div class="card-top">
+          <span class="card-categoria">Baldes</span>
+          <div class="card-nome">Balde Plástico 3,6 Litros Branco</div>
+          <div class="card-desc">Em breve disponível no portal.</div>
+          <div class="card-tags">
+            <span class="card-tag">Alimentos</span><span class="card-tag">Industrial</span>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <div class="card-specs">
+            <div class="card-spec">
+              <span class="card-spec-label">Qtd mínima</span>
+              <span class="card-spec-valor">200 un</span>
+            </div>
+            
+          </div>
+
+          <div style="display:flex;align-items:center;gap:12px">
+            
+
+            
+          </div>
+        </div>
+      </div>
+
+      
+      <div class="card-em-breve">
+        <div class="em-breve-badge">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="clock" class="lucide lucide-clock lc"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          Em breve
+        </div>
+      </div>
+    </div>
+    <div class="produto-card" onclick="">
+      <div class="card-foto">
+        <div class="card-badge">Baldes</div>
+        <div style="width:100%;height:100%;background:var(--bg-card-light);display:flex;align-items:center;justify-content:center">
+               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="package" style="width:48px;height:48px;stroke:var(--border-light)" class="lucide lucide-package"><path d="m7.5 4.27 9 5.15"></path><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg>
+             </div>
+      </div>
+
+      <div class="card-body">
+        <div class="card-top">
+          <span class="card-categoria">Baldes</span>
+          <div class="card-nome">Balde Plástico 20 Litros Branco</div>
+          <div class="card-desc">Em breve disponível no portal.</div>
+          <div class="card-tags">
+            <span class="card-tag">Alimentos</span><span class="card-tag">Químico</span><span class="card-tag">Industrial</span>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <div class="card-specs">
+            <div class="card-spec">
+              <span class="card-spec-label">Qtd mínima</span>
+              <span class="card-spec-valor">50 un</span>
+            </div>
+            
+          </div>
+
+          <div style="display:flex;align-items:center;gap:12px">
+            
+
+            
+          </div>
+        </div>
+      </div>
+
+      
+      <div class="card-em-breve">
+        <div class="em-breve-badge">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="clock" class="lucide lucide-clock lc"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          Em breve
+        </div>
+      </div>
+    </div>
+    <div class="produto-card" onclick="">
+      <div class="card-foto">
+        <div class="card-badge">Bombonas</div>
+        <div style="width:100%;height:100%;background:var(--bg-card-light);display:flex;align-items:center;justify-content:center">
+               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="package" style="width:48px;height:48px;stroke:var(--border-light)" class="lucide lucide-package"><path d="m7.5 4.27 9 5.15"></path><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path></svg>
+             </div>
+      </div>
+
+      <div class="card-body">
+        <div class="card-top">
+          <span class="card-categoria">Bombonas</span>
+          <div class="card-nome">Bombona Plástica 20 Litros Natural</div>
+          <div class="card-desc">Em breve disponível no portal.</div>
+          <div class="card-tags">
+            <span class="card-tag">Químico</span><span class="card-tag">Agrícola</span><span class="card-tag">Industrial</span>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <div class="card-specs">
+            <div class="card-spec">
+              <span class="card-spec-label">Qtd mínima</span>
+              <span class="card-spec-valor">25 un</span>
+            </div>
+            
+          </div>
+
+          <div style="display:flex;align-items:center;gap:12px">
+            
+
+            
+          </div>
+        </div>
+      </div>
+
+      
+      <div class="card-em-breve">
+        <div class="em-breve-badge">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" data-lucide="clock" class="lucide lucide-clock lc"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+          Em breve
+        </div>
+      </div>
+    </div></div>
+
+</main>
+
+<script>
+const SUPABASE_URL = 'https://ejparzvdyokntveaxphq.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_4Xbg7pAZ8D5tBRmvLQCMiA_0n5ibVGD';
+const SHEETS_CSV   = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRj9BhjQIkMhuvSIgowN2i8kG6kVlLKVpbSoKz09tVxy9XYkLs3Eo7mzXnxBDb6Sw/pub?output=csv';
+
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// Catálogo fixo — será expandido conforme novos produtos forem cadastrados na planilha
+const CATALOGO = [
+  {
+    id: '1',
+    nome: 'Pote Plástico 1 Litro Preto',
+    categoria: 'Potes',
+    desc: 'Embalagem versátil em plástico virgem HDPE, atóxico e BPA Free. Tampa lacre preta com vedação de segurança. Indicado para alimentos, produtos químicos, cosméticos e farmacêuticos.',
+    tags: ['Alimentos','Químico','Cosmético','Farmacêutico'],
+    foto: 'https://cdn.awsli.com.br/2500x2500/2724/2724254/produto/330052836/catalogo-de-produtos--26--p9d5oyins2.jpg',
+    qtd_min: 600,
+    peso_vol: '33 kg',
+    dimensoes: '55×52×95 cm',
+    pagina: 'portal-b2b.html',
+    ativo: true,
+  },
+  {
+    id: '2',
+    nome: 'Pote Plástico 500ml Preto',
+    categoria: 'Potes',
+    desc: 'Em breve disponível no portal.',
+    tags: ['Alimentos','Químico'],
+    foto: '',
+    qtd_min: 600,
+    peso_vol: '—',
+    dimensoes: '—',
+    pagina: null,
+    ativo: false,
+  },
+  {
+    id: '3',
+    nome: 'Balde Plástico 3,6 Litros Branco',
+    categoria: 'Baldes',
+    desc: 'Em breve disponível no portal.',
+    tags: ['Alimentos','Industrial'],
+    foto: '',
+    qtd_min: 200,
+    peso_vol: '—',
+    dimensoes: '—',
+    pagina: null,
+    ativo: false,
+  },
+  {
+    id: '4',
+    nome: 'Balde Plástico 20 Litros Branco',
+    categoria: 'Baldes',
+    desc: 'Em breve disponível no portal.',
+    tags: ['Alimentos','Químico','Industrial'],
+    foto: '',
+    qtd_min: 50,
+    peso_vol: '—',
+    dimensoes: '—',
+    pagina: null,
+    ativo: false,
+  },
+  {
+    id: '5',
+    nome: 'Bombona Plástica 20 Litros Natural',
+    categoria: 'Bombonas',
+    desc: 'Em breve disponível no portal.',
+    tags: ['Químico','Agrícola','Industrial'],
+    foto: '',
+    qtd_min: 25,
+    peso_vol: '—',
+    dimensoes: '—',
+    pagina: null,
+    ativo: false,
+  },
+];
+
+let precos = {}; // preços vindos da planilha
+
+function fmtMoeda(v){
+  return 'R$ '+Number(v).toFixed(2).replace('.',',').replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+}
+
+async function verificarAuth(){
+  const { data } = await sb.auth.getSession();
+  if(!data.session){ window.location.href = 'index.html'; return null; }
+  return data.session.user;
+}
+
+async function logout(){
+  await sb.auth.signOut();
+  window.location.href = 'index.html';
+}
+
+async function carregarPrecos(){
+  try {
+    const res = await fetch(SHEETS_CSV);
+    const csv = await res.text();
+    const lines = csv.trim().split('\n');
+    const headers = lines[0].split(',').map(h => h.trim().replace(/"/g,'').toLowerCase());
+
+    for(let i = 1; i < lines.length; i++){
+      const vals = lines[i].split(',').map(v => v.trim().replace(/"/g,''));
+      const obj = {};
+      headers.forEach((h,j) => obj[h] = vals[j]||'');
+
+      const id = obj['id']||obj['id\r']||'';
+      const precoKey = Object.keys(obj).find(k => k.includes('preco')&&(k.includes('un')||k.includes('unit')));
+      const preco = parseFloat(precoKey ? obj[precoKey] : 0)||0;
+      const foto  = obj['foto']||obj['imagem']||obj['image']||'';
+
+      if(id) precos[id] = { preco, foto };
+    }
+  } catch(e){
+    console.warn('Erro ao carregar preços:', e);
+  }
+}
+
+function renderCatalogo(){
+  const lista = document.getElementById('produtos-lista');
+  lista.innerHTML = CATALOGO.map(p => {
+    const dadosPlanilha = precos[p.id] || {};
+    const preco = dadosPlanilha.preco || 0;
+    const foto  = dadosPlanilha.foto  || p.foto || '';
+
+    return `
+    <div class="produto-card" onclick="${p.ativo ? `window.location.href='${p.pagina}'` : ''}">
+      <div class="card-foto">
+        <div class="card-badge">${p.categoria}</div>
+        ${foto
+          ? `<img src="${foto}" alt="${p.nome}" onerror="this.style.display='none'">`
+          : `<div style="width:100%;height:100%;background:var(--bg-card-light);display:flex;align-items:center;justify-content:center">
+               <i data-lucide="package" style="width:48px;height:48px;stroke:var(--border-light)"></i>
+             </div>`
+        }
+      </div>
+
+      <div class="card-body">
+        <div class="card-top">
+          <span class="card-categoria">${p.categoria}</span>
+          <div class="card-nome">${p.nome}</div>
+          <div class="card-desc">${p.desc}</div>
+          <div class="card-tags">
+            ${p.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <div class="card-specs">
+            <div class="card-spec">
+              <span class="card-spec-label">Qtd mínima</span>
+              <span class="card-spec-valor">${p.qtd_min.toLocaleString('pt-BR')} un</span>
+            </div>
+            ${p.peso_vol !== '—' ? `
+            <div class="card-spec">
+              <span class="card-spec-label">Peso volume</span>
+              <span class="card-spec-valor">${p.peso_vol}</span>
+            </div>` : ''}
+          </div>
+
+          <div style="display:flex;align-items:center;gap:12px">
+            ${preco > 0 ? `
+            <div class="card-preco-box">
+              <div class="card-preco-label">Preço unitário</div>
+              <div class="card-preco">${fmtMoeda(preco)}</div>
+              <div class="card-preco-un">por unidade</div>
+            </div>` : ''}
+
+            ${p.ativo ? `
+            <button class="btn-ver" onclick="event.stopPropagation();window.location.href='${p.pagina}'">
+              <i data-lucide="arrow-right" class="lc"></i>
+              Ver produto
+            </button>` : ''}
+          </div>
+        </div>
+      </div>
+
+      ${!p.ativo ? `
+      <div class="card-em-breve">
+        <div class="em-breve-badge">
+          <i data-lucide="clock" class="lc"></i>
+          Em breve
+        </div>
+      </div>` : ''}
+    </div>`;
+  }).join('');
+
+  lucide.createIcons();
+}
+
+(async () => {
+  const user = await verificarAuth();
+  if(!user) return;
+
+  document.getElementById('user-email').textContent = user.email;
+  const nome = user.user_metadata?.nome || user.email.split('@')[0];
+  document.getElementById('welcome-nome').textContent = `Olá, ${nome}! 👋`;
+
+  await carregarPrecos();
+  renderCatalogo();
+  lucide.createIcons();
+})();
+</script>
+
+
+</body></html>
